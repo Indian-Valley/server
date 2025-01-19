@@ -35,6 +35,26 @@ async function getOrderById(req, res) {
     return res.status(200).json(data[0]);
 }
 
+async function getOrdersFromDate(req, res) {
+    const { date } = req.body;
+
+    const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .gte('created_at', date);
+
+    if (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Failed to fetch orders', fullError: error });
+    }
+
+    if (data.length === 0) {
+        return res.status(500).json({error: `No orders found from date: ${date}`});
+    }
+
+    return res.status(200).json(data);
+}
+
 async function updateOrderStatus(req, res) {
     const { id } = req.params;
     const { status } = req.body;
@@ -110,5 +130,5 @@ async function addOrder(req, res) {
     }}
 
 module.exports = {
-    getAllOrders, addOrder, getOrderById, updateOrderStatus, deleteOrder
+    getAllOrders, addOrder, getOrderById, getOrdersFromDate, updateOrderStatus, deleteOrder
 }

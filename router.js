@@ -12,6 +12,7 @@ router.get('/orders', orders_controller.getAllOrders);
 router.get('/orders/:id', orders_controller.getOrderById);
 router.patch('/orders/:id', orders_controller.updateOrderStatus);
 router.delete('/orders/:id', orders_controller.deleteOrder);
+router.get('/orders-from', orders_controller.getOrdersFromDate);
 
 // -- Addresses Endpoint ------------------------------------------------------------
 router.get('/addresses', addresses_controller.getCustomerAddress);
