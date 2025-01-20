@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const router = require('./router.js');
 
-const local = true
+const local = false
 
 const app = express();
 const URL = local? "https://localhost" : "https://indian-valley-server.onrender.com";
