@@ -59,10 +59,12 @@ async function getOrdersFromDate(req, res) {
 
 async function updateOrderStatus(req, res) {
     const { id } = req.params;
-    const { status } = req.body;
+    const { customerId, status } = req.body;
 
     if (!status) {
         return res.status(400).json({ error: 'Missing required field: status' });
+    } else if (!customerId) {
+        return res.status(400).json({ error: 'Missing required field: customerId' });
     }
 
     const { data, error } = await supabase
@@ -77,7 +79,7 @@ async function updateOrderStatus(req, res) {
 
     res.status(200).json({ message: 'Order status updated successfully', order: data[0] });
 
-    sendEventToCustomer({type:"ORDER_STATUS_CHANGE", newStatus: status});
+    sendEventToCustomer(customerId, {type:"ORDER_STATUS_CHANGE", newStatus: status});
 }
 
 async function deleteOrder(req, res) {
