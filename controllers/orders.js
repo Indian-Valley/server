@@ -1,4 +1,6 @@
 const supabase = require('../supabaseClient.js')
+const { sendEventToStaff } = require("./events/staff_event_controller");
+const {sendEventToCustomer} = require("./events/customer_event_controller");
 
 async function getAllOrders(req, res) {
 
@@ -73,7 +75,9 @@ async function updateOrderStatus(req, res) {
         return res.status(500).json({ error: 'Failed to update order status', fullError: error });
     }
 
-    return res.status(200).json({ message: 'Order status updated successfully', order: data[0] });
+    res.status(200).json({ message: 'Order status updated successfully', order: data[0] });
+
+    sendEventToCustomer({type:"ORDER_STATUS_CHANGE", newStatus: status});
 }
 
 async function deleteOrder(req, res) {
@@ -123,6 +127,8 @@ async function addOrder(req, res) {
 
     console.log("Order created successfully")
     res.status(200).json({ message: 'Order created successfully', order: data });
+
+    sendEventToStaff({type: "NEW_ORDER" })
 
     if (error) {
         console.error(error);

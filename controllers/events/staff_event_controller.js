@@ -18,10 +18,12 @@ async function receiveStaffConnection(req, res) {
 }
 
 // Function to send events to clients
-const sendEvent = (event) => {
+const sendEventToStaff = (event) => {
     staffClients.forEach(client => {
         client.res.write(`data: ${JSON.stringify(event)}\n\n`);
     });
 };
 
-module.exports = {receiveStaffConnection, sendEvent}
+module.exports = {
+    receiveStaffConnection, sendEventToStaff
+}
