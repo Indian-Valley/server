@@ -16,13 +16,13 @@ router.get('/orders', orders_controller.getAllOrders);
 router.get('/orders/:id', orders_controller.getOrderById);
 router.patch('/orders/:id', orders_controller.updateOrderStatus);
 router.delete('/orders/:id', orders_controller.deleteOrder);
-router.get('/orders-from', orders_controller.getOrdersFromDate);
+router.get('/orders/from/:date', orders_controller.getOrdersFromDate);
 
 router.get("/events/staff", staff_event_controller.receiveStaffConnection);
 router.get("/events/customer/:customerId", customer_event_controller.receiveCustomerConnection)
 
 // -- Addresses Endpoint ------------------------------------------------------------
-router.get('/addresses', addresses_controller.getCustomerAddress);
+router.get('/addresses/:customer_id', addresses_controller.getCustomerAddress);
 router.post('/addresses', addresses_controller.addCustomerAddress);
 
 module.exports = router;

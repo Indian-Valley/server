@@ -1,7 +1,7 @@
 const supabase = require('../supabaseClient.js');
 
 async function getCustomerAddress(req, res) {
-    const { customer_id } = req.body;
+    const { customer_id } = req.params;
 
     if (!customer_id) {
         res.status(400).send({error: 'No customer id provided'});

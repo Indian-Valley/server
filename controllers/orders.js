@@ -38,7 +38,7 @@ async function getOrderById(req, res) {
 }
 
 async function getOrdersFromDate(req, res) {
-    const { date } = req.body;
+    const { date } = req.params;
 
     const { data, error } = await supabase
         .from('orders')
