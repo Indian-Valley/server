@@ -20,6 +20,7 @@ async function receiveStaffConnection(req, res) {
 // Function to send events to clients
 const sendEventToStaff = (event) => {
     staffClients.forEach(client => {
+        console.log(`Sending event data: ${JSON.stringify(event)}\n\n`)
         client.res.write(`data: ${JSON.stringify(event)}\n\n`);
     });
 };

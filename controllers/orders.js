@@ -94,6 +94,7 @@ async function deleteOrder(req, res) {
         console.error(error);
         return res.status(500).json({ error: 'Failed to delete order' });
     }
+    console.error(`Order ${id} deleted successfully`);
 
     return res.status(200).json({ message: 'Order deleted successfully' });
 }
@@ -127,15 +128,18 @@ async function addOrder(req, res) {
             target_time
         });
 
+    if (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, error: 'Failed to create order' });
+    }
+
     console.log("Order created successfully")
-    res.status(200).json({ message: 'Order created successfully', order: data });
+    res.status(200).json({ success: true, message: 'Order created successfully', order: data });
 
     sendEventToStaff({type: "NEW_ORDER" })
 
-    if (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to create order' });
-    }}
+
+}
 
 module.exports = {
     getAllOrders, addOrder, getOrderById, getOrdersFromDate, updateOrderStatus, deleteOrder

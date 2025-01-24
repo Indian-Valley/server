@@ -4,6 +4,7 @@ const router = express.Router();
 // -- controllers -------------------------------------------------------------------
 const orders_controller = require('./controllers/orders.js');
 const addresses_controller = require('./controllers/addresses.js');
+const customers_controller = require('./controllers/customers.js');
 
 // event controllers
 const staff_event_controller = require('./controllers/events/staff_event_controller.js');
@@ -24,5 +25,9 @@ router.get("/events/customer/:customerId", customer_event_controller.receiveCust
 // -- Addresses Endpoint ------------------------------------------------------------
 router.get('/addresses/:customer_id', addresses_controller.getCustomerAddress);
 router.post('/addresses', addresses_controller.addCustomerAddress);
+
+// -- Customer Endpoint ------------------------------------------------------------
+router.get('/customers/:customer_uuid', customers_controller.getCustomer);
+router.patch('/customers/:customer_uuid', customers_controller.updateCustomerDetails);
 
 module.exports = router;
