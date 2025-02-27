@@ -44,6 +44,27 @@ async function updateCustomerDetails(req, res) {
     return res.status(200).json(data);
 }
 
+async function getCustomerPreviousOrders(req, res) {
+    const { customer_id } = req.params;
+
+    if (!customer_id) {
+        return res.status(400).send({error: 'No customer id provided'});
+    }
+
+    const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('customer_id', customer_id)
+
+    if (error) {
+        console.error(error);
+        return res.status(400).json({error: "Failed to get customer address", fullError: error});
+    }
+
+    console.log(data)
+    return res.status(200).json(data);
+}
+
 module.exports = {
-    getCustomer, updateCustomerDetails
+    getCustomer, updateCustomerDetails, getCustomerPreviousOrders
 }

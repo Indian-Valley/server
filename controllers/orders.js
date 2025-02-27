@@ -137,8 +137,6 @@ async function addOrder(req, res) {
     res.status(200).json({ success: true, message: 'Order created successfully', order: data });
 
     sendEventToStaff({type: "NEW_ORDER" })
-
-
 }
 
 module.exports = {

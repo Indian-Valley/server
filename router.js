@@ -29,5 +29,6 @@ router.post('/addresses', addresses_controller.addCustomerAddress);
 // -- Customer Endpoint ------------------------------------------------------------
 router.get('/customers/:customer_uuid', customers_controller.getCustomer);
 router.patch('/customers/:customer_uuid', customers_controller.updateCustomerDetails);
+router.get('/customers/previous-orders/:customer_id', customers_controller.getCustomerPreviousOrders);
 
 module.exports = router;
