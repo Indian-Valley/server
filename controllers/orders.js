@@ -111,8 +111,6 @@ async function addOrder(req, res) {
         return res.status(400).json({ error: 'Missing required fields: items' });
     if (!total_price)
         return res.status(400).json({ error: 'Missing required fields: total_price' });
-    if (!target_time)
-        return res.status(400).json({ error: 'Missing required fields: target_time' });
     if (!payment_method)
         return res.status(400).json({ error: 'Missing required fields: payment_method' });
 
