@@ -101,31 +101,38 @@ async function deleteOrder(req, res) {
 
 async function addOrder(req, res) {
 
-    const { customer_name, items, total_price, is_delivery, target_time, payment_method } = req.body;
+    const { customer_name, customer_id,  items, total_price, is_delivery, target_time, payment_method, delivery_address } = req.body;
 
     if (!customer_name)
         return res.status(400).json({ error: 'Missing required fields: customer_name' });
+    if (!customer_id)
+        return res.status(400).json({ error: 'Missing required fields: customer_id' });
     if (!items)
         return res.status(400).json({ error: 'Missing required fields: items' });
     if (!total_price)
         return res.status(400).json({ error: 'Missing required fields: total_price' });
-    if (is_delivery == null)
-        return res.status(400).json({ error: 'Missing required fields: is_delivery' });
     if (!target_time)
         return res.status(400).json({ error: 'Missing required fields: target_time' });
     if (!payment_method)
         return res.status(400).json({ error: 'Missing required fields: payment_method' });
 
+    if (is_delivery == null)
+        return res.status(400).json({ error: 'Missing required fields: is_delivery' });
+    else if (is_delivery && !delivery_address)
+        return res.status(400).json({ error: 'Missing required fields: delivery_address' });
+
     const { data, error } = await supabase
         .from('orders')
         .insert({
             customer_name,
+            customer_id,
             items,
             total_price,
             is_delivery,
             status: 'Pending',
             payment_method,
-            target_time
+            target_time,
+            delivery_address
         });
 
     if (error) {
