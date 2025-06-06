@@ -4,6 +4,7 @@ const router = express.Router();
 // -- controllers -------------------------------------------------------------------
 const orders_controller = require('./controllers/orders.js');
 const addresses_controller = require('./controllers/addresses.js');
+const menu_controller = require('./controllers/menu.js');
 const customers_controller = require('./controllers/customers.js');
 
 // event controllers
@@ -25,6 +26,10 @@ router.get("/events/customer/:customerId", customer_event_controller.receiveCust
 // -- Addresses Endpoint ------------------------------------------------------------
 router.get('/addresses/:customer_id', addresses_controller.getCustomerAddress);
 router.post('/addresses', addresses_controller.addCustomerAddress);
+
+// -- Menu Endpoint ------------------------------------------------------------
+router.get('/menu/items', menu_controller.getMenuItems);
+router.get('/menu/categories', menu_controller.getMenuCategories);
 
 // -- Customer Endpoint ------------------------------------------------------------
 router.get('/customers/:customer_uuid', customers_controller.getCustomer);

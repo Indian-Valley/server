@@ -4,7 +4,7 @@ async function getCustomer(req, res) {
     const { customer_uuid } = req.params;
 
     if (!customer_uuid) {
-        return res.status(400).send({error: 'No customer id provided'});
+        return res.status(400).send({success: false, error: 'No customer id provided'});
     }
 
     const { data, error } = await supabase
@@ -15,7 +15,7 @@ async function getCustomer(req, res) {
 
     if (error) {
         console.error(error);
-        return res.status(400).json({error: "Failed to get customer address", fullError: error});
+        return res.status(400).json({ success: false, error: "Failed to get customer address", fullError: error});
     }
 
     console.log(data)
@@ -58,7 +58,7 @@ async function getCustomerPreviousOrders(req, res) {
 
     if (error) {
         console.error(error);
-        return res.status(400).json({error: "Failed to get customer address", fullError: error});
+        return res.status(400).json({ success: false, error: "Failed to get customer orders", fullError: error});
     }
 
     console.log(data)
