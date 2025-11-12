@@ -20,17 +20,61 @@ const supabase = require('../supabaseClient.js');
 //     return res.status(200).json({success: true, data: data});
 // }
 
-async function getMenuItems(req, res) {
-    const { data, error } = await supabase
-        .from('menu_items')
-        .select('*')
+global.menuItems = []
+global.itemPrices = {}
+global.menuSetAt = null;
 
-    if (error) {
-        console.error(error);
-        return res.status(400).json({success: false, error: "Failed to get menu items", fullError: error});
+function setMenuItem(items) {
+    global.menuSetAt = Date.now()
+    global.menuItems = items
+
+    for (const item of items) {
+        itemPrices[item.id] = Number(item.price)*100;
+    }
+}
+
+async function priceOf(itemId) {
+    if (menuSetAt===null || Date.now() - menuSetAt > 1000 * 60 * 60) {
+        console.log("Getting menu items")
+
+        const {data, error} = await supabase
+            .from('menu_items')
+            .select('*')
+
+        if (error) {
+            console.error(error);
+            return 0;
+        } else {
+            setMenuItem(data)
+        }
     }
 
-    return res.status(200).json({success: true, data: data});
+    return itemPrices[itemId]
+}
+
+async function getMenuItems(req, res) {
+    if (!menuSetAt || Date.now() - menuSetAt > 1000 * 60 * 60) {
+        console.log("Getting menu items")
+
+        const { data, error } = await supabase
+            .from('menu_items')
+            .select('*')
+
+        if (error) {
+            console.error(error);
+            return res.status(400).json({success: false, error: "Failed to get menu items", fullError: error});
+        }
+
+        setMenuItem(data)
+
+        return res.status(200).json({success: true, data: data});
+
+    } else {
+        console.log("Using cached menu items")
+
+        return res.status(200).json({success: true, data: menuItems});
+
+    }
 }
 
 async function getMenuCategories(req, res) {
@@ -47,5 +91,5 @@ async function getMenuCategories(req, res) {
 }
 
 module.exports = {
-    getMenuItems, getMenuCategories
+    getMenuItems, getMenuCategories, priceOf
 }
