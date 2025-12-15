@@ -30,6 +30,7 @@ router.get("/events/customer/:customerId", customer_event_controller.receiveCust
 router.get('/addresses/:customer_id', addresses_controller.getCustomerAddress);
 router.post('/addresses', addresses_controller.addCustomerAddress);
 router.patch('/addresses/:address_id', addresses_controller.updateAddress)
+router.delete('/addresses', addresses_controller.removeCustomerAddress)
 
 // -- Menu Endpoint ------------------------------------------------------------
 router.get('/menu/items', menu_controller.getMenuItems);
@@ -39,6 +40,7 @@ router.get('/menu/categories', menu_controller.getMenuCategories);
 router.get('/customers/:customer_uuid', customers_controller.getCustomer);
 router.patch('/customers/:customer_id', customers_controller.updateCustomerDetails);
 router.get('/customers/previous-orders/:customer_id', customers_controller.getCustomerPreviousOrders);
+router.get('/customers/current-orders/:customer_id', customers_controller.getCustomerCurrentOrders);
 router.delete('/customer', customers_controller.deleteCustomer);
 
 // -- Points Endpoint ------------------------------------------------------------

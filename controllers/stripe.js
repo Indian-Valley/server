@@ -21,7 +21,7 @@ async function checkout(req, res) {
     const service_fee = 50
     const delivery_fee = delivery ? 200 : 0
 
-    const amount = subtotal + delivery_fee + service_fee
+    const amount = Math.round(subtotal + delivery_fee + service_fee)
     const app_fee = Math.round(amount * 0.1)
 
     const ephemeralKey = await stripe.ephemeralKeys.create(
@@ -71,7 +71,7 @@ async function customerSignUp(req, res) {
 
         if (error) {
             console.error(error);
-            return res.status(400).json({error: "Failed to create customer details", fullError: error});
+            return res.status(400).json({success:false, error: "Failed to create customer details", fullError: error});
         }
 
         return res.status(200).json({
@@ -83,7 +83,7 @@ async function customerSignUp(req, res) {
         console.error(error);
 
         return res.status(400).json({
-            'success': false, error: "Failed to create customer", fullError: error});
+            success: false, error: "Failed to create customer", fullError: error});
     }
 
 }

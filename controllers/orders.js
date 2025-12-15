@@ -61,10 +61,12 @@ async function updateOrderStatus(req, res) {
     const { id } = req.params
     const { customerId, status } = req.body
 
-    if (!status) {
-        return res.status(400).json({ error: 'Missing required field: status' })
-    } else if (!customerId) {
-        return res.status(400).json({ error: 'Missing required field: customerId' })
+    console.log('updating order status', id, req.body, req.params)
+
+    if (status===undefined || status==='' || status===null) {
+        return res.status(400).json({ success:false, error: 'Missing required field: status' })
+    } else if (customerId===undefined || customerId==='' || customerId===null) {
+        return res.status(400).json({ success: false, error: 'Missing required field: customerId' })
     }
 
     const { data, error } = await supabase
@@ -74,10 +76,10 @@ async function updateOrderStatus(req, res) {
 
     if (error) {
         console.error(error)
-        return res.status(500).json({ error: 'Failed to update order status', fullError: error })
+        return res.status(500).json({ success: false, error: 'Failed to update order status', fullError: error })
     }
 
-    res.status(200).json({ message: 'Order status updated successfully', order: data[0] })
+    res.status(200).json({ success: true })
 
     sendEventToCustomer(customerId, { type: 'ORDER_STATUS_CHANGE', newStatus: status })
 }
@@ -107,6 +109,7 @@ async function addOrder(req, res) {
         items,
         total_price,
         is_delivery,
+        is_asap,
         target_time,
         payment_method,
         delivery_address
@@ -136,9 +139,10 @@ async function addOrder(req, res) {
         items,
         total_price,
         is_delivery,
-        status: 'Pending',
+        status: 'PENDING',
         payment_method,
         target_time,
+        is_asap,
         delivery_address
     })
 
