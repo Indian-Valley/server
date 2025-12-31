@@ -8,7 +8,7 @@ async function receiveCustomerConnection(req, res) {
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
 
-    customerClients[customerId] = [...(customerClients[customerId] || []), res];
+    customerClients[customerId] = customerClients[customerId]? [...customerClients[customerId], res] : [res]
 
     console.log(`Customer ${customerId} connected: ${customerId}`);
 
@@ -27,7 +27,7 @@ const sendEventToCustomer = (customerId, event) => {
         return
     }
 
-    clientConnections.forEach(c => c.res.write(`data: ${JSON.stringify(event)}\n\n`));
+    clientConnections.forEach(res => res.write(`data: ${JSON.stringify(event)}\n\n`));
 }
 
 module.exports = {
