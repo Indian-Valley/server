@@ -29,7 +29,15 @@ function setMenuItem(items) {
     global.menuItems = items
 
     for (const item of items) {
-        itemPrices[item.id] = Number(item.price)*100;
+
+        const inPence = Number(item.price)*100
+        if (item.options) {
+            for (const option of item.options) {
+                itemPrices[`${item.id}.${option.id}`] = inPence + Number(option.price_modifier? option.price_modifier : 0)*100
+            }
+        } else {
+            itemPrices[item.id] = inPence;
+        }
     }
 }
 

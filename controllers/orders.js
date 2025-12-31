@@ -81,7 +81,7 @@ async function updateOrderStatus(req, res) {
 
     res.status(200).json({ success: true })
 
-    sendEventToCustomer(customerId, { type: 'ORDER_STATUS_CHANGE', newStatus: status })
+    sendEventToCustomer(customerId, { type: 'ORDER_STATUS_UPDATE', data: {status: status} })
 }
 
 async function deleteOrder(req, res) {
